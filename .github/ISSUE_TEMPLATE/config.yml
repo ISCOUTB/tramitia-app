@@ -1,8 +1,8 @@
-﻿blank_issues_enabled: true
+blank_issues_enabled: true
 contact_links:
-  - name: Encargo de revisiÃ³n
+  - name: Encargo de revisión
     url: https://github.com/ISCOUTB/tramitia-app/blob/main/ENCARGO-DE-REVISION.md
-    about: Alcance, reglas y formato del informe de revisiÃ³n
+    about: Alcance, reglas y formato del informe de revisión
   - name: Equipo de plataforma
     url: mailto:plataforma@cuadrantedigital.example
-    about: Dudas sobre el funcionamiento de la aplicaciÃ³n entregada
+    about: Dudas sobre el funcionamiento de la aplicación entregada
