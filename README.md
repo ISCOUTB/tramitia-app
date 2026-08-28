@@ -34,21 +34,19 @@ Desarrollada por **Cuadrante Digital S.A.S.** — equipo de plataforma.
 
 ## Descarga
 
-El paquete de la versión candidata está publicado como archivo adjunto en la
-sección *Releases* del repositorio, con la etiqueta `v2.4.0-rc1`.
+La versión candidata corresponde a la etiqueta `v2.4.0-rc1` de este
+repositorio.
 
-```powershell
-# Con el cliente de GitHub
-gh release download v2.4.0-rc1 --repo ISCOUTB/tramitia-app
-Expand-Archive tramitia-2.4.0-rc1.zip -DestinationPath tramitia
-
-# O clonando el repositorio en la etiqueta entregada
+```
 git clone --branch v2.4.0-rc1 --depth 1 https://github.com/ISCOUTB/tramitia-app.git
 ```
 
-El contenido del archivo adjunto y el del repositorio en esa etiqueta son
-idénticos. Trabaje sobre una copia y no modifique el paquete original de la
-entrega.
+O el archivo comprimido de la etiqueta, si prefiere no usar git:
+
+<https://github.com/ISCOUTB/tramitia-app/archive/refs/tags/v2.4.0-rc1.zip>
+
+Las dos formas dan el mismo contenido. Trabaje sobre una copia y no modifique el
+paquete original de la entrega.
 
 ## Qué hace
 
@@ -69,9 +67,26 @@ pasos configurado. Hay tres herramientas: `listar_solicitudes`, `priorizar` y
 - Flask 3.1 (única dependencia)
 
 No hay servicios externos: la base es SQLite en archivo y el cliente de modelo
-que se incluye es local.
+que se incluye es local. Funciona igual en macOS, Linux y Windows; la integración
+continua corre la suite en Linux y el equipo desarrolla en Windows y en macOS.
 
 ## Puesta en marcha
+
+### macOS y Linux
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+
+cp .env.example .env
+python run.py
+```
+
+En macOS, si `python3` no está disponible: `brew install python@3.12`, o el
+instalador de <https://www.python.org/downloads/>.
+
+### Windows (PowerShell)
 
 ```powershell
 python -m venv .venv
@@ -82,19 +97,37 @@ Copy-Item .env.example .env
 python run.py
 ```
 
-La plataforma queda en `http://127.0.0.1:5050/`. Comprobación rápida, sin
-credenciales:
+Si PowerShell rechaza el script de activación, habilite la política para la
+sesión actual: `Set-ExecutionPolicy -Scope Process RemoteSigned`.
 
-```powershell
-Invoke-RestMethod http://127.0.0.1:5050/health
+### Comprobación
+
+La plataforma queda en `http://127.0.0.1:5050/`. Sin credenciales:
+
+```bash
+curl http://127.0.0.1:5050/health          # macOS y Linux
 ```
 
-Con Docker:
-
 ```powershell
+Invoke-RestMethod http://127.0.0.1:5050/health   # Windows
+```
+
+Devuelve estado, versión y cliente de modelo activo.
+
+`run.py` **ocupa la terminal**. Abra una segunda para lanzar peticiones, o
+detenga el servicio con `Ctrl+C` antes de cambiar la configuración: las
+variables de entorno se leen al arrancar.
+
+### Con Docker
+
+Idéntico en los tres sistemas:
+
+```
 docker compose build
 docker compose up -d
 ```
+
+En macOS requiere Docker Desktop o Colima con el motor en marcha.
 
 ## Cuentas del ambiente
 
@@ -155,9 +188,15 @@ Todas las variables, con sus valores por defecto, están documentadas en
 
 ## Pruebas
 
-```powershell
+Mismo comando en los tres sistemas, con el entorno virtual activado:
+
+```
 python -m unittest discover -s tests -t tests
 ```
+
+Sin activar el entorno, en macOS y Linux: `.venv/bin/python -m unittest discover
+-s tests -t tests`. En Windows: `.venv\Scripts\python.exe -m unittest discover -s
+tests -t tests`.
 
 35 pruebas, alrededor de 5 segundos. Cubren la API de solicitudes, la validación
 del cuerpo, el bucle del asistente, los topes de consumo, el catálogo de

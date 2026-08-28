@@ -3,6 +3,10 @@
 Tramitia 2.4.0-rc1. Manual para el equipo de operaciones de la DSC y para quien
 ejecute el paquete en el ambiente de revisión.
 
+Los comandos vienen en dos variantes donde difieren: `bash`/`zsh` para macOS y
+Linux, y PowerShell para Windows. Lo que no lleva variante es idéntico en los
+tres sistemas.
+
 ## Variables de entorno
 
 | Variable | Valor por omisión | Efecto |
@@ -20,8 +24,17 @@ ejecute el paquete en el ambiente de revisión.
 
 ## Arranque en desarrollo
 
+```bash
+# macOS y Linux
+cp .env.example .env
+source .venv/bin/activate
+python run.py
+```
+
 ```powershell
+# Windows
 Copy-Item .env.example .env
+.\.venv\Scripts\Activate.ps1
 python run.py
 ```
 
@@ -44,7 +57,7 @@ está en el backlog.
 
 ## Contenedor
 
-```powershell
+```
 docker compose build
 docker compose up -d
 docker compose ps          # el healthcheck debe pasar a healthy
@@ -57,7 +70,7 @@ viven en el volumen `datos`, así que sobreviven al reinicio del contenedor.
 
 Dentro de la imagen:
 
-```powershell
+```
 docker compose exec tramitia python -m unittest discover -s tests -t tests
 ```
 
@@ -78,16 +91,27 @@ asistente, la identidad efectiva y las herramientas usadas. El formato está en
 
 ## Respaldo
 
+```bash
+# macOS y Linux
+cp tramitia.sqlite3 "respaldo-$(date +%Y%m%d).sqlite3"
+```
+
 ```powershell
+# Windows
 Copy-Item tramitia.sqlite3 "respaldo-$(Get-Date -Format yyyyMMdd).sqlite3"
 ```
 
-Detenga el servicio antes de copiar el archivo, o use `sqlite3 .backup`.
+Detenga el servicio antes de copiar el archivo, o use `sqlite3 tramitia.sqlite3
+".backup respaldo.sqlite3"`, que es seguro con el servicio arriba.
 
 ## Comprobación de salud
 
+```bash
+curl http://127.0.0.1:5050/health                 # macOS y Linux
+```
+
 ```powershell
-Invoke-RestMethod http://127.0.0.1:5050/health
+Invoke-RestMethod http://127.0.0.1:5050/health    # Windows
 ```
 
 Devuelve estado, versión y cliente de modelo activo. Es lo que consulta el
@@ -105,7 +129,13 @@ Devuelve estado, versión y cliente de modelo activo. Es lo que consulta el
 
 ## Empezar de cero
 
+```bash
+# macOS y Linux
+rm -f tramitia.sqlite3 tramitia-auditoria.jsonl
+```
+
 ```powershell
+# Windows
 Remove-Item tramitia.sqlite3, tramitia-auditoria.jsonl -ErrorAction SilentlyContinue
 ```
 

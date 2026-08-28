@@ -48,7 +48,18 @@ La base de datos que se crea al arrancar contiene cuatro solicitudes de arranque
 con personas y casos ficticios. No hay datos de ciudadanos reales en el paquete
 ni deben cargarse durante la revisión.
 
-## 4. Advertencias operativas para quien revise
+## 4. Ambiente de revisión
+
+El paquete corre igual en **macOS, Linux y Windows**: Python 3.11 o superior y
+Flask como única dependencia. La puesta en marcha para cada sistema está en el
+[`README.md`](README.md) y el detalle de operación en
+[`docs/OPERACION.md`](docs/OPERACION.md). También corre en contenedor, con los
+mismos comandos en los tres sistemas.
+
+La integración continua construye y prueba en Linux, y el equipo de plataforma
+desarrolla en Windows y en macOS, así que las tres rutas están en uso.
+
+## 5. Advertencias operativas para quien revise
 
 - El paquete está configurado para escuchar en `127.0.0.1`. `docker-compose.yml`
   publica el puerto únicamente en la interfaz de bucle. **No exponga esta
@@ -58,11 +69,12 @@ ni deben cargarse durante la revisión.
   documentos contra un catálogo en memoria y **nunca abre una conexión de red**,
   de modo que la revisión no genera tráfico hacia ningún sistema externo. El
   transporte HTTP real no viene incluido en este paquete.
-- La base de datos y el log de auditoría son archivos locales. Bórrelos para
-  empezar de cero (`tramitia.sqlite3`, `tramitia-auditoria.jsonl`); en Docker,
+- La base de datos y el log de auditoría son archivos locales, en el directorio
+  desde el que se levanta el servicio. Bórrelos para empezar de cero
+  (`tramitia.sqlite3`, `tramitia-auditoria.jsonl`); en Docker,
   `docker compose down -v`.
 
-## 5. Cronograma
+## 6. Cronograma
 
 | Hito | Fecha |
 |---|---|
@@ -71,14 +83,14 @@ ni deben cargarse durante la revisión.
 | Ventana de correcciones | semana 4 |
 | Despliegue previsto | semana 5 |
 
-## 6. Canal de hallazgos
+## 7. Canal de hallazgos
 
 Los hallazgos se reportan como *issues* del repositorio con la plantilla
 «Hallazgo de revisión de seguridad», que pide los nueve campos del encargo. Las
 correcciones, si la DSC las solicita, se entregan como *pull request* con la
 plantilla correspondiente. Ver [`SECURITY.md`](SECURITY.md).
 
-## 7. Contactos
+## 8. Contactos
 
 | Tema | Responsable |
 |---|---|
@@ -86,7 +98,7 @@ plantilla correspondiente. Ver [`SECURITY.md`](SECURITY.md).
 | Asistente y cliente de modelo | `asistente@cuadrantedigital.example` |
 | Infraestructura y despliegue | DSC, operaciones — `operaciones@dsc.example` |
 
-## 8. Firma
+## 9. Firma
 
 Entregado por el equipo de plataforma de Cuadrante Digital S.A.S. como versión
 candidata. Cualquier hallazgo debe reportarse por el canal del encargo y no

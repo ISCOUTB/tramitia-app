@@ -6,13 +6,59 @@ es el único endpoint anónimo.
 Todos los cuerpos son JSON (`Content-Type: application/json`). Los errores
 devuelven `{"error": "<mensaje>"}` con el código correspondiente.
 
-## Ayudante para PowerShell
+## Ayudante para la terminal
 
-Los ejemplos usan `Invoke-RestMethod`. En PowerShell 5.1 las comillas del cuerpo
-JSON se rompen al pasarlas a `curl.exe`, así que conviene este ayudante:
+Los dos ayudantes de abajo se llaman igual y reciben los mismos argumentos, de
+modo que los ejemplos de este documento sirven en cualquiera de los dos sistemas:
+
+```
+<ayudante> <usuario> <METODO> <ruta> [cuerpo JSON]
+```
+
+### macOS y Linux (bash o zsh)
+
+```bash
+tramitia() {
+  local usuario=$1 metodo=$2 ruta=$3 cuerpo=$4 puerto=${5:-5050}
+  local clave
+  case "$usuario" in
+    ana.vargas)   clave='Tramitia2024' ;;
+    bruno.mejia)  clave='bruno123' ;;
+    carla.osorio) clave='Tramitia2024' ;;
+    *) echo "usuario desconocido: $usuario" >&2; return 1 ;;
+  esac
+  if [ -n "$cuerpo" ]; then
+    curl -s -u "$usuario:$clave" -X "$metodo"       -H 'Content-Type: application/json' -d "$cuerpo"       -w '
+HTTP %{http_code}
+' "http://127.0.0.1:$puerto$ruta"
+  else
+    curl -s -u "$usuario:$clave" -X "$metodo"       -w '
+HTTP %{http_code}
+' "http://127.0.0.1:$puerto$ruta"
+  fi
+}
+```
+
+Péguelo una vez en la terminal de peticiones. Para leer las respuestas con
+sangría, encadene `| python3 -m json.tool` o, si tiene `jq`, `| jq`. El código
+HTTP se imprime al final de cada respuesta, que es lo que interesa cuando se
+comparan `200`, `403` y `429`.
+
+En macOS, `curl` viene con el sistema; no hay que instalar nada.
+
+Si trabaja en **Git Bash sobre Windows**, use el ayudante de PowerShell: al pasar
+un argumento con acentos a `curl.exe` los caracteres se corrompen y el servidor
+rechaza el cuerpo con un `400` que parece de validación. Si aun así necesita
+`curl`, pase el cuerpo por archivo: `--data-binary @cuerpo.json`.
+
+### Windows (PowerShell)
+
+En PowerShell 5.1 las comillas del cuerpo JSON se destrozan al pasarlas a
+`curl.exe`, que acaba enviando un cuerpo que el servidor rechaza. Use este
+ayudante, que recibe el mismo JSON en texto:
 
 ```powershell
-function T($Usuario, $Metodo, $Ruta, $Cuerpo, $Puerto = 5050) {
+function tramitia($Usuario, $Metodo, $Ruta, $Cuerpo, $Puerto = 5050) {
   $clave = @{
     'ana.vargas'   = 'Tramitia2024'
     'bruno.mejia'  = 'bruno123'
@@ -20,13 +66,21 @@ function T($Usuario, $Metodo, $Ruta, $Cuerpo, $Puerto = 5050) {
   }[$Usuario]
   $cred = [PSCredential]::new($Usuario, (ConvertTo-SecureString $clave -AsPlainText -Force))
   $opts = @{ Method = $Metodo; Uri = "http://127.0.0.1:$Puerto$Ruta"; Credential = $cred }
-  if ($Cuerpo) { $opts.Body = ($Cuerpo | ConvertTo-Json); $opts.ContentType = 'application/json' }
+  if ($Cuerpo) {
+    $opts.Body = [System.Text.Encoding]::UTF8.GetBytes($Cuerpo)
+    $opts.ContentType = 'application/json; charset=utf-8'
+  }
   try { Invoke-RestMethod @opts }
   catch { "HTTP $([int]$_.Exception.Response.StatusCode): $($_.ErrorDetails.Message)" }
 }
 ```
 
-Uso: `T ana.vargas GET /api/solicitudes`
+Uso, idéntico en los dos sistemas:
+
+```
+tramitia ana.vargas GET /api/solicitudes
+tramitia ana.vargas POST /api/solicitudes '{"area":"salud","resumen":"Caso nuevo","prioridad":3}'
+```
 
 ## `GET /health`
 
@@ -67,8 +121,8 @@ Listado visible para la identidad autenticada. Un `analista` recibe las suyas; u
 Cualquier otro campo produce `400`. El propietario lo determina la sesión y no se
 acepta en el cuerpo.
 
-```powershell
-T ana.vargas POST /api/solicitudes @{ area='salud'; resumen='Caso nuevo'; prioridad=3 }
+```
+tramitia ana.vargas POST /api/solicitudes '{"area":"salud","resumen":"Caso nuevo","prioridad":3}'
 ```
 
 Responde `201` con la solicitud creada.
@@ -82,8 +136,8 @@ Devuelve el detalle, o `404` si no existe.
 Actualiza `resumen` y `prioridad` con las mismas reglas de validación. `area` y
 `propietario` no son editables.
 
-```powershell
-T bruno.mejia PATCH /api/solicitudes/2 @{ resumen='Texto corregido'; prioridad=5 }
+```
+tramitia bruno.mejia PATCH /api/solicitudes/2 '{"resumen":"Texto corregido","prioridad":5}'
 ```
 
 ## Asistente
@@ -113,9 +167,9 @@ Catálogo de herramientas y topes vigentes.
 | `modelo` | texto | opcional; `local` (por omisión) o `muestreado` |
 | `semilla` | entero | opcional; solo aplica al cliente `muestreado` |
 
-```powershell
-T carla.osorio POST /api/asistente/ejecutar @{ tarea='Resume las solicitudes pendientes' }
-T carla.osorio POST /api/asistente/ejecutar @{ tarea='Resume las solicitudes pendientes'; modelo='muestreado'; semilla=14 }
+```
+tramitia carla.osorio POST /api/asistente/ejecutar '{"tarea":"Resume las solicitudes pendientes"}'
+tramitia carla.osorio POST /api/asistente/ejecutar '{"tarea":"Resume las solicitudes pendientes","modelo":"muestreado","semilla":14}'
 ```
 
 Respuesta:
@@ -144,9 +198,9 @@ caracteres, `400`.
 Invocación directa de la herramienta, sin el modelo de por medio. La usa el
 tablero del comité. Exige rol `coordinador`; con `analista` responde `403`.
 
-```powershell
-T carla.osorio POST /api/asistente/herramientas/priorizar @{}
-T ana.vargas   POST /api/asistente/herramientas/priorizar @{}   # 403
+```
+tramitia carla.osorio POST /api/asistente/herramientas/priorizar '{}'
+tramitia ana.vargas   POST /api/asistente/herramientas/priorizar '{}'   # 403
 ```
 
 ## Auditoría
@@ -156,8 +210,8 @@ T ana.vargas   POST /api/asistente/herramientas/priorizar @{}   # 403
 Últimos eventos registrados por la plataforma. Parámetro `limite` (100 por
 omisión).
 
-```powershell
-T carla.osorio GET '/api/admin/auditoria?limite=20'
+```
+tramitia carla.osorio GET '/api/admin/auditoria?limite=20'
 ```
 
 ```json
