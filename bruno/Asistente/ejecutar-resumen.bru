@@ -1,0 +1,32 @@
+meta {
+  name: Ejecutar - resumen de solicitudes
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/api/asistente/ejecutar
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{analista_usuario}}
+  password: {{analista_clave}}
+}
+
+body:json {
+  {
+    "tarea": "Resume las solicitudes pendientes"
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+docs {
+  Caso mas comun. La respuesta trae la traza completa: herramientas
+  usadas, argumentos, el contexto que recibio el modelo en cada paso,
+  URLs consultadas, identidad efectiva y consumo.
+}

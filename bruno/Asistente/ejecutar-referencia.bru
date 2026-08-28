@@ -1,0 +1,32 @@
+meta {
+  name: Ejecutar - consultar referencia
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/api/asistente/ejecutar
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{coordinacion_usuario}}
+  password: {{coordinacion_clave}}
+}
+
+body:json {
+  {
+    "tarea": "Consulta la guia de clasificacion vigente"
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+docs {
+  El asistente resuelve la tarea con la herramienta
+  `consultar_referencia`. Con el perfil sin conexion, los documentos
+  salen del catalogo local y la plataforma no abre ninguna conexion.
+}

@@ -1,0 +1,29 @@
+meta {
+  name: Priorizar - analista sin permiso
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{base_url}}/api/asistente/herramientas/priorizar
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{analista_usuario}}
+  password: {{analista_clave}}
+}
+
+body:json {
+  {}
+}
+
+assert {
+  res.status: eq 403
+}
+
+docs {
+  La herramienta exige rol coordinador. Con una cuenta de analista
+  responde `403`.
+}

@@ -1,0 +1,21 @@
+meta {
+  name: Estado del servicio
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/health
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.status: eq ok
+}
+
+docs {
+  Unico endpoint anonimo. Devuelve estado, version y cliente de modelo
+  activo. Es lo que consulta el HEALTHCHECK de la imagen.
+}

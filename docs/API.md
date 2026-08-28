@@ -6,6 +6,10 @@ es el único endpoint anónimo.
 Todos los cuerpos son JSON (`Content-Type: application/json`). Los errores
 devuelven `{"error": "<mensaje>"}` con el código correspondiente.
 
+Si prefiere un cliente grafico a la terminal, en [`../bruno/`](../bruno/) esta la
+misma API como coleccion de [Bruno](https://www.usebruno.com/), con las cuentas
+ya configuradas y una asercion por cada respuesta que este documento promete.
+
 ## Ayudante para la terminal
 
 Los dos ayudantes de abajo se llaman igual y reciben los mismos argumentos, de

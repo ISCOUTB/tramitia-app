@@ -1,0 +1,30 @@
+meta {
+  name: Error - prioridad fuera de rango
+  type: http
+  seq: 9
+}
+
+patch {
+  url: {{base_url}}/api/solicitudes/{{solicitud_id}}
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{analista_usuario}}
+  password: {{analista_clave}}
+}
+
+body:json {
+  {
+    "prioridad": 9
+  }
+}
+
+assert {
+  res.status: eq 400
+}
+
+docs {
+  La prioridad va de 1 a 5, y se valida tambien al actualizar.
+}

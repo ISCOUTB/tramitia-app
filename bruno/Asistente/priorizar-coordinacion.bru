@@ -1,0 +1,29 @@
+meta {
+  name: Priorizar - coordinacion
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{base_url}}/api/asistente/herramientas/priorizar
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{coordinacion_usuario}}
+  password: {{coordinacion_clave}}
+}
+
+body:json {
+  {}
+}
+
+assert {
+  res.status: eq 200
+}
+
+docs {
+  Invocacion directa de la herramienta, sin el modelo de por medio. La
+  usa el tablero del comite para armar el orden del dia.
+}

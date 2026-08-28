@@ -1,0 +1,38 @@
+headers {
+  Accept: application/json
+}
+
+docs {
+  # Tramitia API 2.4.0-rc1
+
+  Coleccion para pruebas manuales de la API. Cubre los nueve endpoints del
+  servicio, con el caso valido de cada uno y los casos de error que declara el
+  contrato de `docs/API.md`.
+
+  ## Antes de empezar
+
+  1. Levante el servicio: `python run.py`, o `docker compose up -d`.
+  2. Seleccione el ambiente **Local** arriba a la derecha.
+  3. Las credenciales de las tres cuentas viven en el ambiente y no en cada
+     peticion: cambielas ahi si rota las contrasenas.
+
+  ## Ambiente
+
+  | Variable | Para que |
+  |---|---|
+  | `base_url` | Direccion del servicio |
+  | `analista_*` | Cuenta de analista |
+  | `otro_analista_*` | Segunda cuenta de analista |
+  | `coordinacion_*` | Cuenta con rol coordinador |
+  | `solicitud_id` | Identificador que usan las peticiones de detalle y edicion |
+
+  ## Notas
+
+  - Las aserciones de cada peticion son las del contrato publicado. Si alguna
+    falla, el servicio no se comporta como su documentacion.
+  - `Radicar solicitud` guarda el identificador creado en la variable
+    `solicitud_creada`, por si quiere encadenar peticiones.
+  - El presupuesto del asistente es de 60 invocaciones por usuario mientras el
+    proceso este arriba. Al agotarlo, `POST /api/asistente/ejecutar` responde
+    `429`; reinicie el servicio para reiniciar el contador.
+}

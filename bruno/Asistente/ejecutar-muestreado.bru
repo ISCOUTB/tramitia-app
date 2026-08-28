@@ -1,0 +1,35 @@
+meta {
+  name: Ejecutar - modelo muestreado
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{base_url}}/api/asistente/ejecutar
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{analista_usuario}}
+  password: {{analista_clave}}
+}
+
+body:json {
+  {
+    "tarea": "Resume las solicitudes pendientes",
+    "modelo": "muestreado",
+    "semilla": 14
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.modelo: eq muestreado
+}
+
+docs {
+  El cliente `muestreado` reproduce la variabilidad del proveedor. Con
+  la misma semilla la ejecucion es reproducible; quite `semilla` para
+  que varie en cada llamada.
+}

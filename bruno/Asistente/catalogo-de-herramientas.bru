@@ -1,0 +1,26 @@
+meta {
+  name: Catalogo de herramientas
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/api/asistente/herramientas
+  body: none
+  auth: basic
+}
+
+auth:basic {
+  username: {{analista_usuario}}
+  password: {{analista_clave}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.limite_pasos: eq 4
+  res.body.limite_tarea: eq 400
+}
+
+docs {
+  Herramientas disponibles y topes vigentes de la ejecucion.
+}

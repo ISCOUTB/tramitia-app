@@ -1,0 +1,25 @@
+meta {
+  name: Detalle de solicitud
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{base_url}}/api/solicitudes/{{solicitud_id}}
+  body: none
+  auth: basic
+}
+
+auth:basic {
+  username: {{analista_usuario}}
+  password: {{analista_clave}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+docs {
+  Cambie `solicitud_id` en el ambiente para consultar otro radicado. Un
+  identificador que no existe responde `404`.
+}

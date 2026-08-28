@@ -159,6 +159,32 @@ en [`docs/API.md`](docs/API.md).
 | `POST /api/asistente/herramientas/priorizar` | Invocación directa, para el tablero del comité |
 | `GET /api/admin/auditoria` | Últimos eventos registrados |
 
+## Coleccion de la API
+
+En [`bruno/`](bruno/) va la coleccion de [Bruno](https://www.usebruno.com/) con
+los nueve endpoints, el caso valido de cada uno y los casos de error que declara
+el contrato. Son archivos de texto versionados junto al codigo, asi que la
+coleccion no se desincroniza de la API.
+
+Desde la aplicacion: *Open Collection* y seleccione la carpeta `bruno`. Elija
+el ambiente **Local** antes de lanzar la primera peticion.
+
+Desde la linea de comandos, con el CLI:
+
+```
+npm install -g @usebruno/cli
+cd bruno
+bru run --env Local -r
+```
+
+Las credenciales de las tres cuentas y la direccion del servicio viven en
+`bruno/environments/Local.bru`, no en cada peticion. Cada peticion trae
+aserciones sobre el codigo de respuesta y sobre los campos que el contrato
+promete: si alguna falla, el servicio no se comporta como su documentacion.
+
+Con el servicio recien levantado, la coleccion completa pasa: 18 peticiones y 24
+aserciones.
+
 ## El asistente
 
 `POST /api/asistente/ejecutar` recibe `tarea` y opcionalmente `modelo` y
@@ -265,6 +291,7 @@ tramitia/
       _heuristica.py apoyo interno de los clientes locales
 tests/               suite de la iteracion
 docs/                arquitectura, API, operacion, decisiones y pendientes
+bruno/               coleccion de la API para pruebas manuales
 .github/
   workflows/ci.yml   pruebas y construccion de la imagen
   ISSUE_TEMPLATE/    ficha de hallazgo de revision
@@ -283,6 +310,7 @@ docs/                arquitectura, API, operacion, decisiones y pendientes
 | [`LICENSE`](LICENSE) | Aviso de uso |
 | [`docs/ARQUITECTURA.md`](docs/ARQUITECTURA.md) | Componentes, flujos y fronteras de confianza |
 | [`docs/API.md`](docs/API.md) | Referencia de endpoints |
+| [`bruno/`](bruno/) | Coleccion de la API para Bruno |
 | [`docs/OPERACION.md`](docs/OPERACION.md) | Variables, despliegue, registros y respaldo |
 | [`docs/DECISIONES.md`](docs/DECISIONES.md) | Registro de decisiones de diseño (ADR) |
 | [`docs/PENDIENTES.md`](docs/PENDIENTES.md) | Backlog y deuda técnica al cierre de la iteración |

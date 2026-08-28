@@ -1,0 +1,34 @@
+meta {
+  name: Error - campo no reconocido
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{base_url}}/api/solicitudes
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{analista_usuario}}
+  password: {{analista_clave}}
+}
+
+body:json {
+  {
+    "area": "salud",
+    "resumen": "Cuerpo con un campo extra",
+    "prioridad": 2,
+    "propietario": "carla.osorio"
+  }
+}
+
+assert {
+  res.status: eq 400
+}
+
+docs {
+  Un campo que la API no espera es un error del cliente: responde `400`
+  en vez de ignorarlo en silencio.
+}

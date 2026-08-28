@@ -1,0 +1,28 @@
+meta {
+  name: Ultimos eventos
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/api/admin/auditoria?limite=20
+  body: none
+  auth: basic
+}
+
+auth:basic {
+  username: {{coordinacion_usuario}}
+  password: {{coordinacion_clave}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+docs {
+  Ultimos eventos registrados por la plataforma. El parametro `limite`
+  acota la respuesta; por omision son 100.
+
+  Cada evento trae el actor y, en las ejecuciones del asistente, la
+  identidad efectiva con la que corrieron las herramientas.
+}

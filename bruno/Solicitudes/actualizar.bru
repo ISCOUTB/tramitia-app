@@ -1,0 +1,32 @@
+meta {
+  name: Actualizar solicitud
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{base_url}}/api/solicitudes/{{solicitud_id}}
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{analista_usuario}}
+  password: {{analista_clave}}
+}
+
+body:json {
+  {
+    "resumen": "Resumen corregido por el analista",
+    "prioridad": 4
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.prioridad: eq 4
+}
+
+docs {
+  Solo `resumen` y `prioridad` son editables; `area` y `propietario` no.
+}

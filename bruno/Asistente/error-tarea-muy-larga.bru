@@ -1,0 +1,30 @@
+meta {
+  name: Error - tarea muy larga
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{base_url}}/api/asistente/ejecutar
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{analista_usuario}}
+  password: {{analista_clave}}
+}
+
+body:json {
+  {
+    "tarea": "Consolida el estado de todas las solicitudes del trimestre, agrupadas por area y por prioridad, e incluye el detalle de cada radicado con su fecha de creacion, el analista responsable, el historial de cambios de prioridad y una recomendacion de atencion para el comite, redactada en parrafos completos y con el sustento normativo de cada decision tomada. Agrega al final un anexo con los radicados que superan el plazo de respuesta y el responsable de cada uno."
+  }
+}
+
+assert {
+  res.status: eq 400
+}
+
+docs {
+  El tope de la tarea es de 400 caracteres, y se aplica en el servidor.
+}

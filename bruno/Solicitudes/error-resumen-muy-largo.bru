@@ -1,0 +1,32 @@
+meta {
+  name: Error - resumen muy largo
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{base_url}}/api/solicitudes
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{analista_usuario}}
+  password: {{analista_clave}}
+}
+
+body:json {
+  {
+    "area": "salud",
+    "resumen": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "prioridad": 2
+  }
+}
+
+assert {
+  res.status: eq 400
+}
+
+docs {
+  El tope del resumen es de 180 caracteres.
+}

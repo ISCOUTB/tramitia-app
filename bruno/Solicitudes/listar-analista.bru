@@ -1,0 +1,24 @@
+meta {
+  name: Listar - analista
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/api/solicitudes
+  body: none
+  auth: basic
+}
+
+auth:basic {
+  username: {{analista_usuario}}
+  password: {{analista_clave}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+docs {
+  Un analista recibe unicamente sus solicitudes.
+}

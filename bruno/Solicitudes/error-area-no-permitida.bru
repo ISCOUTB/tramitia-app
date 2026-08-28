@@ -1,0 +1,33 @@
+meta {
+  name: Error - area no permitida
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{base_url}}/api/solicitudes
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{analista_usuario}}
+  password: {{analista_clave}}
+}
+
+body:json {
+  {
+    "area": "transporte",
+    "resumen": "Area fuera del catalogo",
+    "prioridad": 2
+  }
+}
+
+assert {
+  res.status: eq 400
+}
+
+docs {
+  El area se valida contra el catalogo de areas habilitadas, en el
+  servidor y no solo en el portal.
+}
