@@ -1,5 +1,24 @@
 # Tramitia
 
+> ### ⚠ Aviso académico
+>
+> **Cuadrante Digital S.A.S.** y la **Dirección de Servicios Compartidos** son
+> **entidades ficticias**. No existen: se crearon como escenario para el curso
+> **Seguridad en el software** del programa de Ingeniería de Sistemas de la
+> **Universidad Tecnológica de Bolívar**.
+>
+> Este repositorio contiene una aplicación con **fallas de seguridad
+> deliberadas**, usada como caso de estudio para practicar la revisión de
+> seguridad previa a un despliegue. Los datos, las personas, los casos y las
+> credenciales son inventados.
+>
+> **No la despliegue ni la exponga en ninguna red.** No la use como base para un
+> sistema real ni copie su código a uno: varias de sus decisiones de diseño son
+> incorrectas a propósito.
+>
+> A partir de aquí, el documento está escrito en la voz del equipo proveedor
+> ficticio, que es parte del ejercicio.
+
 [![CI](https://github.com/ISCOUTB/tramitia-app/actions/workflows/ci.yml/badge.svg)](https://github.com/ISCOUTB/tramitia-app/actions/workflows/ci.yml)
 
 Plataforma de recepción y triaje de solicitudes de la **Dirección de Servicios

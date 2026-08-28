@@ -1,22 +1,34 @@
 Aviso de uso — Tramitia
 
-Copyright (c) 2026 Cuadrante Digital S.A.S.
+MATERIAL ACADEMICO. Cuadrante Digital S.A.S. y la Direccion de Servicios
+Compartidos (DSC) son entidades FICTICIAS, creadas como escenario para el curso
+Seguridad en el software del programa de Ingenieria de Sistemas de la
+Universidad Tecnologica de Bolivar (UTB). Ninguna existe, y ningun dato, persona,
+caso o credencial de este repositorio corresponde a la realidad.
 
-Este software se desarrolló por contrato para la Direccion de Servicios
-Compartidos (DSC) y se entrega para su revision tecnica previa al despliegue.
+Copyright (c) 2026 Universidad Tecnologica de Bolivar.
 
-Uso permitido: instalacion, ejecucion, inspeccion del codigo y elaboracion de
-correcciones por parte del personal autorizado por la DSC y de los equipos
-revisores designados, con el unico fin de evaluar y mejorar esta version.
+Se permite usar, copiar, modificar y distribuir este material con fines
+educativos, conservando este aviso.
 
-Condiciones:
+ADVERTENCIA. Esta aplicacion contiene fallas de seguridad DELIBERADAS y varias
+de sus decisiones de diseño son incorrectas a proposito: existe para que un
+equipo revisor las encuentre antes de un despliegue simulado. No debe
+desplegarse, no debe exponerse en ninguna red y no debe usarse como base ni como
+referencia para un sistema real.
 
-1. Los datos incluidos en el paquete son ficticios. No debe cargarse en este
-   software informacion personal o institucional real mientras no cuente con
-   concepto favorable de despliegue.
-2. Esta version es candidata y no ha superado revision de seguridad. No debe
-   desplegarse en un ambiente productivo ni exponerse en redes compartidas.
-3. Toda redistribucion debe conservar este aviso.
+No cargue en este software informacion personal o institucional real bajo
+ninguna circunstancia.
+
+Lo que sigue es el aviso de uso en la voz del proveedor ficticio, y es parte del
+ejercicio:
+
+  Este software se desarrollo por contrato para la Direccion de Servicios
+  Compartidos y se entrega para su revision tecnica previa al despliegue. Uso
+  permitido: instalacion, ejecucion, inspeccion del codigo y elaboracion de
+  correcciones por parte del personal autorizado por la DSC y de los equipos
+  revisores designados, con el unico fin de evaluar y mejorar esta version.
+  Esta version es candidata y no ha superado revision de seguridad.
 
 EL SOFTWARE SE ENTREGA "TAL CUAL", SIN GARANTIA DE NINGUN TIPO, EXPRESA O
 IMPLICITA, INCLUIDAS LAS GARANTIAS DE COMERCIABILIDAD, IDONEIDAD PARA UN

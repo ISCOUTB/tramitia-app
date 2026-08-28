@@ -1,5 +1,12 @@
 # Reporte de problemas de seguridad
 
+> **Aviso académico.** Cuadrante Digital S.A.S. y la Dirección de Servicios
+> Compartidos son entidades ficticias del curso **Seguridad en el software** de
+> la **Universidad Tecnológica de Bolívar**. Esta aplicación tiene fallas
+> deliberadas y no está desplegada en ninguna parte, así que no hay nada que
+> reportar por un canal real: los correos de abajo son parte del escenario. El
+> proceso que describe este documento es el del ejercicio.
+
 ## Versión bajo revisión
 
 `2.4.0-rc1` es una versión **candidata** que no ha pasado revisión de seguridad
