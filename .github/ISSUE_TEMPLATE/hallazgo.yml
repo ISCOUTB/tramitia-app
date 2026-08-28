@@ -1,0 +1,119 @@
+name: Hallazgo de revisión de seguridad
+description: Reportar un defecto encontrado durante la revisión previa al despliegue
+title: "[hallazgo] "
+labels: ["seguridad", "revision-2.4.0-rc1"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Una ficha por hallazgo. Todos los campos son obligatorios: un hallazgo
+        incompleto no puede priorizarse. Ver `ENCARGO-DE-REVISION.md`, sección 5.1.
+
+  - type: input
+    id: titulo
+    attributes:
+      label: Título del defecto
+      description: Una línea, en términos del defecto y no del síntoma.
+      placeholder: "Las herramientas del asistente se ejecutan con una cuenta privilegiada"
+    validations:
+      required: true
+
+  - type: input
+    id: ubicacion
+    attributes:
+      label: Ubicación
+      description: Archivo y función o línea concreta del código entregado.
+      placeholder: "tramitia/asistente/api.py:identidad_efectiva"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: categoria
+    attributes:
+      label: Categoría de referencia
+      options:
+        - "OWASP Top 10:2021 — A01 Control de acceso roto"
+        - "OWASP Top 10:2021 — A02 Fallas criptográficas"
+        - "OWASP Top 10:2021 — A03 Inyección"
+        - "OWASP Top 10:2021 — A04 Diseño inseguro"
+        - "OWASP Top 10:2021 — A05 Configuración de seguridad incorrecta"
+        - "OWASP Top 10:2021 — A07 Fallas de identificación y autenticación"
+        - "OWASP Top 10:2021 — A08 Fallas de integridad"
+        - "OWASP Top 10:2021 — A09 Fallas de registro y monitoreo"
+        - "OWASP Top 10:2021 — A10 Falsificación de peticiones del lado del servidor"
+        - "OWASP API Security Top 10:2023 — API1 Autorización a nivel de objeto"
+        - "OWASP API Security Top 10:2023 — API3 Autorización a nivel de propiedad"
+        - "OWASP API Security Top 10:2023 — API4 Consumo de recursos sin restricción"
+        - "OWASP API Security Top 10:2023 — API5 Autorización a nivel de función"
+        - "OWASP API Security Top 10:2023 — API8 Configuración incorrecta"
+        - "OWASP Top 10 for LLM Applications:2025 — LLM01 Inyección de prompt"
+        - "OWASP Top 10 for LLM Applications:2025 — LLM02 Divulgación de información sensible"
+        - "OWASP Top 10 for LLM Applications:2025 — LLM05 Manejo inseguro de la salida"
+        - "OWASP Top 10 for LLM Applications:2025 — LLM06 Agencia excesiva"
+        - "OWASP Top 10 for LLM Applications:2025 — LLM07 Fuga del prompt del sistema"
+        - "OWASP Top 10 for LLM Applications:2025 — LLM10 Consumo sin límites"
+        - "Otra (indicarla en la descripción)"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severidad
+    attributes:
+      label: Severidad propuesta
+      options: ["Crítica", "Alta", "Media", "Baja"]
+    validations:
+      required: true
+
+  - type: textarea
+    id: justificacion
+    attributes:
+      label: Justificación de la severidad
+      description: Por qué esa severidad, en términos de prerrequisitos e impacto. Una etiqueta sin argumento no sirve.
+    validations:
+      required: true
+
+  - type: textarea
+    id: prerrequisitos
+    attributes:
+      label: Prerrequisitos del atacante
+      description: Qué necesita: cuenta, rol, acceso previo, interacción de la víctima.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduccion
+    attributes:
+      label: Reproducción
+      description: Comandos exactos y salida obtenida, paso a paso. Un tercero debe poder repetirlo tal cual.
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: impacto
+    attributes:
+      label: Impacto
+      description: Qué obtiene el atacante en términos del negocio de la DSC, no del código.
+    validations:
+      required: true
+
+  - type: textarea
+    id: remediacion
+    attributes:
+      label: Remediación propuesta
+      description: Qué se cambia y en qué archivo. "Validar entradas" o "aplicar buenas prácticas" no es una remediación.
+    validations:
+      required: true
+
+  - type: input
+    id: afirmacion
+    attributes:
+      label: Afirmación del proveedor que este hallazgo refuta
+      description: Identificador C-1 a C-9 del README, si aplica.
+      placeholder: "C-4"
+
+  - type: textarea
+    id: cadena
+    attributes:
+      label: Encadenamiento
+      description: Otros hallazgos con los que se combina, y qué impacto adicional produce la combinación.

@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tramitia — panel de solicitudes</title>
+<style>
+  :root {
+    --fondo: #f7f7f8; --panel: #ffffff; --borde: #d9d9de;
+    --texto: #1c1c1f; --suave: #63636b; --acento: #1d4ed8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fondo: #16161a; --panel: #1f1f24; --borde: #33333b;
+      --texto: #ececf0; --suave: #9b9ba4; --acento: #8ab4ff;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 1.5rem; background: var(--fondo); color: var(--texto);
+    font: 15px/1.55 ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+  }
+  main { max-width: 62rem; margin: 0 auto; display: grid; gap: 1.25rem; }
+  h1 { font-size: 1.35rem; margin: 0; }
+  h2 { font-size: 1rem; margin: 0 0 .6rem; }
+  section {
+    background: var(--panel); border: 1px solid var(--borde);
+    border-radius: 8px; padding: 1rem;
+  }
+  .cinta { display: flex; flex-wrap: wrap; gap: .5rem; align-items: baseline; }
+  .etiqueta {
+    font-size: .78rem; padding: .15rem .5rem; border-radius: 999px;
+    border: 1px solid var(--borde); color: var(--suave);
+  }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: .45rem .5rem; border-bottom: 1px solid var(--borde); }
+  th { font-size: .78rem; text-transform: uppercase; color: var(--suave); letter-spacing: .04em; }
+  .tabla-scroll { overflow-x: auto; }
+  code, pre { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: .85rem; }
+  pre {
+    background: var(--fondo); border: 1px solid var(--borde); border-radius: 6px;
+    padding: .7rem; overflow-x: auto; margin: .5rem 0 0; white-space: pre-wrap;
+  }
+  input, button, select {
+    font: inherit; padding: .45rem .6rem; border-radius: 6px;
+    border: 1px solid var(--borde); background: var(--fondo); color: var(--texto);
+  }
+  button { cursor: pointer; }
+  form { display: flex; flex-wrap: wrap; gap: .5rem; }
+  form input[name="tarea"] { flex: 1 1 20rem; }
+  p.nota { color: var(--suave); font-size: .87rem; margin: .4rem 0 0; }
+</style>
+</head>
+<body>
+<main>
+
+  <div class="cinta">
+    <h1>Tramitia</h1>
+    <span class="etiqueta">{{ usuario.username }} · {{ usuario.role }}</span>
+    <span class="etiqueta">2.4.0-rc1</span>
+  </div>
+
+  <section>
+    <h2>Solicitudes visibles para {{ usuario.username }}</h2>
+    <div class="tabla-scroll">
+      <table>
+        <thead><tr><th>id</th><th>propietario</th><th>area</th><th>prio</th><th>resumen</th></tr></thead>
+        <tbody>
+        {% for s in solicitudes %}
+          <tr>
+            <td>{{ s.id }}</td>
+            <td>{{ s.propietario }}</td>
+            <td>{{ s.area }}</td>
+            <td>{{ s.prioridad }}</td>
+            {# El resumen admite formato enriquecido (negritas, vinculos al
+               expediente) desde el editor del portal, asi que se inserta tal
+               cual y no escapado. #}
+            <td>{{ s.resumen | safe }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <p class="nota">Los analistas ven sus propias solicitudes; la coordinacion ve todas.</p>
+  </section>
+
+  <section>
+    <h2>Asistente</h2>
+    <form id="formulario">
+      <input name="tarea" value="Resume las solicitudes pendientes" aria-label="Tarea">
+      <select name="modelo" aria-label="Cliente de modelo">
+        <option value="local">local</option>
+        <option value="muestreado">muestreado</option>
+      </select>
+      <input name="semilla" type="number" placeholder="semilla" style="width:7rem" aria-label="Semilla">
+      <button type="submit">Ejecutar</button>
+    </form>
+    <div id="respuesta"></div>
+    <pre id="traza" hidden></pre>
+  </section>
+
+  <section>
+    <h2>Actividad reciente</h2>
+    <pre>{% for e in actividad %}{{ e | tojson }}
+{% endfor %}{% if not actividad %}Sin eventos todavia.{% endif %}</pre>
+  </section>
+
+</main>
+
+<script>
+  const formulario = document.getElementById('formulario');
+  const respuesta = document.getElementById('respuesta');
+  const traza = document.getElementById('traza');
+
+  formulario.addEventListener('submit', async (evento) => {
+    evento.preventDefault();
+    const datos = new FormData(formulario);
+    const cuerpo = { tarea: datos.get('tarea'), modelo: datos.get('modelo') };
+    if (datos.get('semilla')) cuerpo.semilla = Number(datos.get('semilla'));
+
+    respuesta.textContent = 'Ejecutando…';
+    const peticion = await fetch('/api/asistente/ejecutar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cuerpo),
+    });
+    const resultado = await peticion.json();
+
+    if (!peticion.ok) {
+      respuesta.textContent = 'Error ' + peticion.status + ': ' + (resultado.error || '');
+      traza.hidden = true;
+      return;
+    }
+
+    // El asistente puede devolver formato ligero (listas, negritas) en su
+    // respuesta, asi que se inserta como HTML.
+    respuesta.innerHTML = resultado.respuesta;
+
+    traza.hidden = false;
+    traza.textContent = JSON.stringify({
+      herramientas_usadas: resultado.herramientas_usadas,
+      identidad_efectiva: resultado.identidad_efectiva,
+      urls_consultadas: resultado.urls_consultadas,
+      pasos_usados: resultado.pasos_usados,
+      limite_pasos: resultado.limite_pasos,
+      invocaciones_usadas: resultado.invocaciones_usadas,
+    }, null, 2);
+  });
+</script>
+</body>
+</html>

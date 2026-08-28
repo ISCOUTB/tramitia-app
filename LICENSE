@@ -1,0 +1,25 @@
+Aviso de uso — Tramitia
+
+Copyright (c) 2026 Cuadrante Digital S.A.S.
+
+Este software se desarrolló por contrato para la Direccion de Servicios
+Compartidos (DSC) y se entrega para su revision tecnica previa al despliegue.
+
+Uso permitido: instalacion, ejecucion, inspeccion del codigo y elaboracion de
+correcciones por parte del personal autorizado por la DSC y de los equipos
+revisores designados, con el unico fin de evaluar y mejorar esta version.
+
+Condiciones:
+
+1. Los datos incluidos en el paquete son ficticios. No debe cargarse en este
+   software informacion personal o institucional real mientras no cuente con
+   concepto favorable de despliegue.
+2. Esta version es candidata y no ha superado revision de seguridad. No debe
+   desplegarse en un ambiente productivo ni exponerse en redes compartidas.
+3. Toda redistribucion debe conservar este aviso.
+
+EL SOFTWARE SE ENTREGA "TAL CUAL", SIN GARANTIA DE NINGUN TIPO, EXPRESA O
+IMPLICITA, INCLUIDAS LAS GARANTIAS DE COMERCIABILIDAD, IDONEIDAD PARA UN
+PROPOSITO PARTICULAR Y NO INFRACCION. EN NINGUN CASO LOS AUTORES SERAN
+RESPONSABLES POR RECLAMOS, DANOS U OTRAS RESPONSABILIDADES DERIVADOS DEL USO
+DEL SOFTWARE.

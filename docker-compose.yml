@@ -1,0 +1,17 @@
+services:
+  tramitia:
+    build: .
+    # El ambiente de revision publica el servicio solo en la interfaz de bucle
+    # de la maquina del revisor.
+    ports:
+      - "127.0.0.1:5050:5050"
+    environment:
+      TRAMITIA_SECRET: "${TRAMITIA_SECRET:-tramitia-dev-secret-cambiar-en-produccion}"
+      TRAMITIA_MODELO: "${TRAMITIA_MODELO:-local}"
+      TRAMITIA_TRANSPORTE: "offline"
+      TRAMITIA_PRESUPUESTO_ASISTENTE: "${TRAMITIA_PRESUPUESTO_ASISTENTE:-60}"
+    volumes:
+      - datos:/data
+
+volumes:
+  datos:

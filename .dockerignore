@@ -1,0 +1,8 @@
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.jsonl
+.env
+.git/
