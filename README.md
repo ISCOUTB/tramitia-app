@@ -25,7 +25,9 @@ Plataforma de recepción y triaje de solicitudes de la **Dirección de Servicios
 Compartidos (DSC)**, con asistente automatizado para apoyar a los analistas en
 la revisión y el resumen de casos.
 
-Versión de este paquete: **2.4.0-rc1** (candidata a producción).
+Versión de este paquete: **2.4.0-rc2** (candidata a producción, actualiza la
+2.4.0-rc1 con correcciones de la coordinación y del asistente; ver
+[`CHANGELOG.md`](CHANGELOG.md)).
 Desarrollada por **Cuadrante Digital S.A.S.** — equipo de plataforma.
 
 > Este paquete se entrega para revisión técnica previa al despliegue. Antes de
@@ -34,16 +36,15 @@ Desarrollada por **Cuadrante Digital S.A.S.** — equipo de plataforma.
 
 ## Descarga
 
-La versión candidata corresponde a la etiqueta `v2.4.0-rc1` de este
-repositorio.
+La versión candidata corresponde a la rama `2.4.0-rc2` de este repositorio.
 
 ```
-git clone --branch v2.4.0-rc1 --depth 1 https://github.com/ISCOUTB/tramitia-app.git
+git clone --branch 2.4.0-rc2 --depth 1 https://github.com/ISCOUTB/tramitia-app.git
 ```
 
-O el archivo comprimido de la etiqueta, si prefiere no usar git:
+O el archivo comprimido de la rama, si prefiere no usar git:
 
-<https://github.com/ISCOUTB/tramitia-app/archive/refs/tags/v2.4.0-rc1.zip>
+<https://github.com/ISCOUTB/tramitia-app/archive/refs/heads/2.4.0-rc2.zip>
 
 Las dos formas dan el mismo contenido. Trabaje sobre una copia y no modifique el
 paquete original de la entrega.
@@ -239,8 +240,7 @@ en esta versión.**
 | `pruebas` | Instala dependencias y corre la suite en Python 3.11 y 3.12 |
 | `imagen` | Construye la imagen de contenedor, la levanta y comprueba `/health` |
 
-El *pipeline* está en verde en la etiqueta `v2.4.0-rc1`, que es la que se
-entrega.
+El *pipeline* está en verde en la rama `2.4.0-rc2`, que es la que se entrega.
 
 ## Consideraciones de seguridad
 
