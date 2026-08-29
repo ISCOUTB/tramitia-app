@@ -1,5 +1,12 @@
 # Registro de cambios
 
+## 2.4.0-rc2 — vía urgente para el comité
+
+- Las solicitudes que radica o edita la coordinación quedan certificadas por el
+  tablero del comité antes de llegar a la API (ADR-010).
+- El asistente acepta tareas marcadas `urgente` para no esperar el turno
+  ordinario cuando hay una alerta activa (ADR-009).
+
 ## 2.4.0-rc1 — versión candidata entregada para revisión
 
 - Topes de consumo del asistente: 4 pasos por ejecución, 400 caracteres por

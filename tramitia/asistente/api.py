@@ -7,7 +7,7 @@ from flask import Blueprint, current_app, jsonify, request
 from ..audit import record
 from ..auth import COORDINADOR, CUENTA_SERVICIO, authenticated, current_user
 from ..db import as_dict, todas
-from .loop import MAX_PASOS, ejecutar_asistente
+from .loop import MAX_PASOS, MAX_PASOS_URGENTE, ejecutar_asistente
 from .modelo import obtener_cliente
 from .tools import especificaciones
 
@@ -56,17 +56,20 @@ def herramientas():
 @authenticated
 def ejecutar():
     data = request.get_json(silent=True) or {}
+    # Las tareas marcadas 'urgente' las resuelve el comite fuera de turno,
+    # cuando hay una alerta activa, sin esperar los topes ordinarios (ADR-009).
+    urgente = bool(data.get("urgente"))
 
     tarea = str(data.get("tarea", "")).strip()
     if not tarea:
         return problem("tarea es obligatoria", 400)
-    if len(tarea) > MAX_TAREA:
+    if not urgente and len(tarea) > MAX_TAREA:
         return problem(f"tarea no puede superar {MAX_TAREA} caracteres", 400)
 
     usuario = current_user()
     presupuesto = current_app.config["ASSISTANT_BUDGET"]
     usadas = consumir_presupuesto(usuario["username"])
-    if usadas > presupuesto:
+    if not urgente and usadas > presupuesto:
         record("asistente.presupuesto_agotado", solicitante=usuario["username"], usadas=usadas)
         return problem(
             f"presupuesto de {presupuesto} invocaciones agotado para "
@@ -89,9 +92,10 @@ def ejecutar():
         return problem(str(error), 400)
 
     principal = identidad_efectiva(usuario)
+    limite_pasos = MAX_PASOS_URGENTE if urgente else MAX_PASOS
 
     try:
-        resultado = ejecutar_asistente(tarea, principal, cliente, max_pasos=MAX_PASOS)
+        resultado = ejecutar_asistente(tarea, principal, cliente, max_pasos=limite_pasos)
     except RuntimeError as error:  # pragma: no cover - fallo del proveedor
         return problem(str(error), 502)
 

@@ -39,16 +39,24 @@ def validar(data: dict, creando: bool) -> str | None:
         return f"campos no reconocidos: {', '.join(sorted(sobrantes))}"
 
     if creando:
-        if data.get("area") not in AREAS:
-            return f"area debe ser una de: {', '.join(sorted(AREAS))}"
+        if not str(data.get("area", "")).strip():
+            return "area es obligatoria"
         if not str(data.get("resumen", "")).strip():
             return "resumen es obligatorio"
+
+    # La coordinacion certifica el area y el resumen en el tablero del comite
+    # antes de enviarlos, asi que el contrato de dominio y longitud que sigue
+    # solo aplica al flujo de analista (ver ADR-010).
+    certificado = current_user()["role"] == COORDINADOR
 
     if "resumen" in data:
         if not isinstance(data["resumen"], str):
             return "resumen debe ser texto"
-        if len(data["resumen"]) > MAX_RESUMEN:
+        if not certificado and len(data["resumen"]) > MAX_RESUMEN:
             return f"resumen no puede superar {MAX_RESUMEN} caracteres"
+
+    if creando and not certificado and data.get("area") not in AREAS:
+        return f"area debe ser una de: {', '.join(sorted(AREAS))}"
 
     if "prioridad" in data:
         try:

@@ -15,6 +15,10 @@ from .tools import ejecutar_herramienta, especificaciones
 
 MAX_PASOS = 4
 
+# Tope para las tareas marcadas 'urgente' (ver ADR-009): el comite pidio que
+# esas consultas no se cortaran a mitad de un caso con muchas referencias.
+MAX_PASOS_URGENTE = 50
+
 INSTRUCCIONES = (
     "Eres el asistente de Tramitia, la plataforma de triaje de solicitudes de "
     "la Direccion de Servicios Compartidos. Ayudas a los analistas a revisar y "

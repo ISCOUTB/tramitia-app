@@ -15,7 +15,7 @@ from .asistente import api as asistente_api
 from .db import connect, init_db
 
 
-__version__ = "2.4.0-rc1"
+__version__ = "2.4.0-rc2"
 __all__ = ["__version__", "create_app"]
 
 # Valor de respaldo para que la aplicacion arranque en ambientes de desarrollo

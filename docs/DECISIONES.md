@@ -131,6 +131,10 @@ proveedor cobra por uso. Se fijaron tres topes:
 Los tres se aplican en el servidor. El tope de pasos, además, garantiza que el
 bucle termine siempre.
 
+Excepción: el comité pidió una vía para las tareas que marcan como `urgente`,
+de modo que una alerta activa no espere el mismo turno que una consulta
+ordinaria. Esas tareas no cuentan contra los tres topes.
+
 ---
 
 ## ADR-010 — La validación del cuerpo se hace en el servidor
@@ -142,3 +146,8 @@ modo que la validación se repite en el servidor: área contra la lista de área
 habilitadas, longitud del resumen, rango de la prioridad y rechazo de campos no
 reconocidos. Un campo que la API no espera es un error del cliente y se
 responde `400` en lugar de ignorarlo en silencio.
+
+La coordinación certifica área y resumen en el tablero del comité antes de
+radicarlos, así que el contrato de dominio y de longitud no se repite para las
+solicitudes que crea o edita ese rol. El rechazo de campos no reconocidos y el
+rango de la prioridad sí se mantienen para todos los roles.
